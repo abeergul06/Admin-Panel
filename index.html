@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Mobile Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">A</div>
+            <div>
+                <h2>AdminPanel</h2>
+                <span>Management System</span>
+            </div>
+        </div>
+
+        <nav class="navigation">
+
+            <a href="#" class="nav-link active" data-section="dashboard">
+                <span>📊</span>
+                Dashboard
+            </a>
+
+            <a href="#" class="nav-link" data-section="users">
+                <span>👥</span>
+                Users
+            </a>
+
+            <a href="#" class="nav-link" data-section="orders">
+                <span>📦</span>
+                Orders
+            </a>
+
+            <a href="#" class="nav-link" data-section="analytics">
+                <span>📈</span>
+                Analytics
+            </a>
+
+            <a href="#" class="nav-link" data-section="settings">
+                <span>⚙️</span>
+                Settings
+            </a>
+
+        </nav>
+
+        <div class="sidebar-footer">
+            <button id="clearDataBtn">Reset Demo Data</button>
+        </div>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Header -->
+        <header class="topbar">
+
+            <button class="menu-btn" id="menuBtn">
+                ☰
+            </button>
+
+            <div>
+                <h1 id="pageTitle">Dashboard</h1>
+                <p>Welcome back, Admin!</p>
+            </div>
+
+            <div class="profile">
+                <div class="avatar">AG</div>
+
+                <div class="profile-info">
+                    <strong>Admin User</strong>
+                    <span>Administrator</span>
+                </div>
+            </div>
+
+        </header>
+
+
+        <!-- Dashboard Section -->
+        <section id="dashboardSection" class="page-section">
+
+            <!-- Statistics -->
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <div class="stat-icon users-icon">👥</div>
+                    <div>
+                        <span>Total Users</span>
+                        <h2 id="totalUsers">0</h2>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon order-icon">📦</div>
+                    <div>
+                        <span>Total Orders</span>
+                        <h2 id="totalOrders">0</h2>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon pending-icon">⏳</div>
+                    <div>
+                        <span>Pending</span>
+                        <h2 id="pendingOrders">0</h2>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon revenue-icon">💰</div>
+                    <div>
+                        <span>Revenue</span>
+                        <h2 id="totalRevenue">$0</h2>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- Orders Section -->
+            <div class="content-card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h2>Recent Orders</h2>
+                        <p>Manage and monitor customer orders</p>
+                    </div>
+
+                    <button class="primary-btn" id="addOrderBtn">
+                        + Add Order
+                    </button>
+
+                </div>
+
+
+                <!-- Filters -->
+                <div class="filters">
+
+                    <div class="search-box">
+                        <span>🔍</span>
+
+                        <input
+                            type="text"
+                            id="searchInput"
+                            placeholder="Search orders..."
+                        >
+                    </div>
+
+                    <select id="statusFilter">
+                        <option value="all">All Status</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+
+                    <select id="categoryFilter">
+                        <option value="all">All Categories</option>
+                        <option value="Web Development">Web Development</option>
+                        <option value="Design">Design</option>
+                        <option value="Marketing">Marketing</option>
+                    </select>
+
+                </div>
+
+
+                <!-- Loading State -->
+                <div class="state loading-state" id="loadingState">
+                    <div class="loader"></div>
+                    <p>Loading orders...</p>
+                </div>
+
+
+                <!-- Error State -->
+                <div class="state error-state hidden" id="errorState">
+                    <div class="state-icon">⚠️</div>
+                    <h3>Something went wrong</h3>
+                    <p>Unable to load the order data.</p>
+                    <button class="secondary-btn" id="retryBtn">
+                        Try Again
+                    </button>
+                </div>
+
+
+                <!-- Empty State -->
+                <div class="state empty-state hidden" id="emptyState">
+                    <div class="state-icon">📭</div>
+                    <h3>No Orders Found</h3>
+                    <p>Try changing your search or filters.</p>
+                </div>
+
+
+                <!-- Table -->
+                <div class="table-wrapper" id="tableWrapper">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Customer</th>
+                                <th>Category</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="ordersTableBody">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- Pagination -->
+                <div class="pagination-container">
+
+                    <span id="paginationInfo">
+                        Showing 0 results
+                    </span>
+
+                    <div class="pagination" id="pagination"></div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Other Sections -->
+        <section id="usersSection" class="page-section hidden-section">
+            <div class="simple-card">
+                <h2>Users</h2>
+                <p>User management section.</p>
+            </div>
+        </section>
+
+        <section id="ordersSection" class="page-section hidden-section">
+            <div class="simple-card">
+                <h2>Orders</h2>
+                <p>Complete order management section.</p>
+            </div>
+        </section>
+
+        <section id="analyticsSection" class="page-section hidden-section">
+            <div class="simple-card">
+                <h2>Analytics</h2>
+                <p>Analytics and reports will appear here.</p>
+            </div>
+        </section>
+
+        <section id="settingsSection" class="page-section hidden-section">
+            <div class="simple-card">
+                <h2>Settings</h2>
+                <p>Dashboard settings.</p>
+            </div>
+        </section>
+
+    </main>
+
+
+    <!-- Add/Edit Modal -->
+    <div class="modal" id="orderModal">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <div>
+                    <h2 id="modalTitle">Add Order</h2>
+                    <p>Create or update an order.</p>
+                </div>
+
+                <button class="close-btn" id="closeModal">
+                    ×
+                </button>
+            </div>
+
+
+            <form id="orderForm">
+
+                <input type="hidden" id="orderId">
+
+
+                <div class="form-group">
+
+                    <label for="customerName">
+                        Customer Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="customerName"
+                        placeholder="Enter customer name"
+                        required
+                    >
+
+                    <small class="form-error" id="customerError"></small>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="orderCategory">
+                            Category
+                        </label>
+
+                        <select id="orderCategory" required>
+
+                            <option value="">
+                                Select Category
+                            </option>
+
+                            <option value="Web Development">
+                                Web Development
+                            </option>
+
+                            <option value="Design">
+                                Design
+                            </option>
+
+                            <option value="Marketing">
+                                Marketing
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="orderAmount">
+                            Amount
+                        </label>
+
+                        <input
+                            type="number"
+                            id="orderAmount"
+                            placeholder="Enter amount"
+                            min="1"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="orderStatus">
+                        Status
+                    </label>
+
+                    <select id="orderStatus" required>
+
+                        <option value="Pending">
+                            Pending
+                        </option>
+
+                        <option value="Completed">
+                            Completed
+                        </option>
+
+                        <option value="Cancelled">
+                            Cancelled
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="modal-actions">
+
+                    <button
+                        type="button"
+                        class="secondary-btn"
+                        id="cancelModal"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="primary-btn"
+                    >
+                        Save Order
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <span id="toastMessage"></span>
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
